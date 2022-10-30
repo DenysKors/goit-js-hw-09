@@ -1,5 +1,6 @@
 import flatpickr from "flatpickr";
 import "flatpickr/dist/flatpickr.min.css";
+import Notiflix from 'notiflix';
 
 let elRef = selector => document.querySelector(selector);
 elRef('[data-start]').disabled = true;
@@ -15,7 +16,7 @@ const options = {
     const userDate = selectedDates[0].getTime();
     if (userDate <= currentDate) {
       elRef('[data-start]').disabled = true;
-      alert('Please choose a date in the future');
+      Notiflix.Report.warning('Calendar notification', 'Please choose a date in the future', 'Try one more time' );
     }
     else { 
       elRef('[data-start]').disabled = false; 
