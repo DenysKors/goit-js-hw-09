@@ -28,6 +28,9 @@ let calendar = flatpickr('#datetime-picker', options);
 let timerId = null;
 
 elRef('[data-start]').addEventListener('click', () => {
+  if (calendar.selectedDates[0].getTime() <= Date.now()) {
+    Notiflix.Report.warning('Calendar notification', 'Time to update chosen date');
+  }
   elRef('[data-start]').disabled = true;
   timerId = setInterval(timer, 1000);
 });
