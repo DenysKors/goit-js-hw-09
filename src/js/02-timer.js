@@ -20,25 +20,30 @@ const options = {
     else { 
       elRef('[data-start]').disabled = false; 
     }
-    elRef('[data-start]').addEventListener('click', () => {
-      elRef('[data-start]').disabled = true;
-
-      const timerId = setInterval(timer, 1000)
-      function timer() { 
-        const currentTime = Date.now();
-        const timeDif = userDate - currentTime;
-        const timeComponents = convertMs(timeDif);
-        if (timeDif === 0 || timeDif < 0) { 
-          clearInterval(timerId);
-          return
-        }
-        updateClock(timeComponents);
-      }
-    });
   },
 };
 
 let calendar = flatpickr('#datetime-picker', options);
+let timerId = null;
+
+elRef('[data-start]').addEventListener('click', () => {
+  elRef('[data-start]').disabled = true;
+  timerId = setInterval(timer, 1000);
+});
+
+function timer() { 
+  const currentTime = Date.now();
+  const userDate = calendar.selectedDates[0].getTime();
+  const timeDif = userDate - currentTime;
+  const timeComponents = convertMs(timeDif);
+
+  if (timeDif <= 0) { 
+    clearInterval(timerId);
+    return
+  }
+
+  updateClock(timeComponents);
+}
 
 function addLeadingZero(value) { 
   return String(value).padStart(2, '0');
